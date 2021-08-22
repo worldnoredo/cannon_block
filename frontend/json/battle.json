@@ -1,0 +1,10 @@
+{
+    "player_hp":100,
+    "enemy_hp":100,
+    "table_row":6,
+    "player_column":4,
+    "enemy_column":4,
+    "player_block":"121221211212212112122121",
+    "player_cannon":"121212",
+    "enemy_table":"434343"
+}

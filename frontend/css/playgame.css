@@ -1,0 +1,25 @@
+.block{
+    width:50px;
+    height:50px;
+    border:gray 3px solid;
+}
+.red_block{
+    background-color: red;
+}
+.green_block{
+    background-color: green;
+}
+.black_block{
+    background-color: black;
+}
+.head_cannon{
+    width:50px;
+    height:50px;
+}
+.turn_item{
+    width: 150px;
+    height:150px;
+}
+.block_selected{
+    opacity: 0.5;
+}

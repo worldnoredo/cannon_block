@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  	<title>Cannon Block</title>
+	<meta charset="utf-8">
+  	<meta name="viewport" content="width=device-width, initial-scale=1">
+  	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  	<!-- 
+  	//////////////////////////////////////////////////
+  			CSS
+  	-->
+	<link rel="stylesheet" href="../css/common.css">
+	<link rel="stylesheet" href="../css/playgame.css">
+	<!-- 
+	//////////////////////////////////////////////////
+	-->
+
+</head>
+<body>
+	<div class="h-100 d-flex flex-column justify-content-between">
+		<div class="d-flex flex-row">
+			<button class="btn btn-warning align-self-start " type="button">Pause</button>
+		</div>
+
+		<div class="d-flex flex-row justify-content-between">
+			<div class="d-flex flex-column flex-fill align-items-center">
+				<div class="d-flex flex-row mb-3">
+					<p>HP:</p>
+					<p id = "player_hp">show hp</p>
+				</div>
+				
+				
+				<div class="d-flex flex-column" id="player_cannon">
+					<!-- draw in js-->
+				</div>
+				
+			</div>
+			<div class = "align-self-center mx-5">
+				<div class="turn_item"></div>
+			</div>
+
+			<div class="d-flex flex-column flex-fill align-items-center">
+				<div class="d-flex flex-row mb-3">
+					<p>HP:</p>
+					<p id="enemy_hp"></p>
+				</div>
+				
+				<div id="enemy_cannon">enemy cannon content</div>
+				
+			</div>
+		</div>
+
+		<div class="d-flex flex-column justify-content-center">
+			<button type="button" class="btn btn-danger align-self-center mb-4">FIRE</button>
+			<p class="text-center">item</p>
+		</div>
+	</div>
+</body>
+	<!-- 
+	//////////////////////////////////////////////////
+		JS
+	-->
+	<script src="../js/playgame.js"></script>
+	<!-- 
+	//////////////////////////////////////////////////
+	-->
+</html>

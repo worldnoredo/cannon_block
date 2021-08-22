@@ -1,0 +1,15 @@
+
+.relative{
+        z-index: 1;
+        position:relative;
+}
+.menu_title{
+        font-size: 100px;
+        margin-bottom: 40%;
+}
+.menu_button{
+        width: 50%;
+        margin: 10px;
+        border:2px solid black;
+        box-shadow: 2px 2px 0.3;
+}
