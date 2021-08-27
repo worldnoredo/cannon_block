@@ -1,13 +1,11 @@
 .block{
     width:50px;
     height:50px;
-    border:gray 3px solid;
+    border:gray 1px solid;
+    background-color: aqua;
 }
 .red_block{
     background-color: red;
-}
-.green_block{
-    background-color: green;
 }
 .black_block{
     background-color: black;
@@ -22,4 +20,16 @@
 }
 .block_selected{
     opacity: 0.5;
+}
+
+@keyframes cannon_connect {
+    0%      {opacity: 1;}
+    100%    {opacity: 0.5;}
+}
+.cannon_connect{
+    background-color: darksalmon;
+    animation-name: cannon_connect;
+    animation-duration: 1s;
+    animation-direction: alternate;
+    animation-iteration-count: infinite;
 }
