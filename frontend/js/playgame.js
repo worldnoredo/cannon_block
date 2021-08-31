@@ -3,11 +3,19 @@ const IMG_RED_BLOCK = "../image/red_block.png";
 const IMG_GREEN_BLOCK = "../image/green_block.png";
 const IMG_FIRE_BLOCK = "../image/fire_block.png";
 const IMG_NO_BLOCK = "../image/no_block.png";
+const IMG_RED_HEAD = "../image/red_head_cannon.png";
+const IMG_GREEN_HEAD = "../image/green_head_cannon.png";
+const IMG_ENEMY_HEAD = "../image/enemy_head_cannon.png";
 const RED_CANNON = 1;
 const GREEN_CANNON = 2;
 const FIRE_BLOCK = 3;
 const NO_BLOCK = 0;
 const NULL_BLOCK = -1;
+const LEFT = "LEFT";
+const RIGHT = "RIGHT"
+const UP = "UP";
+const DOWN = "DOWN";
+const block_square = 52;
 class Battle{
     constructor(data){
             this.player_hp = data.player_hp;
@@ -110,14 +118,22 @@ class Battle{
             this.setEnemyCannonCount(row,this.getEnemyColumn());
             return false;
         }
-        else if (this.getEnemyCannonCount(row) > 1){
+        else if (this.getEnemyCannonCount(row) > 0){
             this.setEnemyCannonCount(row,this.getEnemyCannonCount(row) - 1);
             return false;
-        } else if (this.getEnemyCannonCount(row) == 1){
+        } else if (this.getEnemyCannonCount(row) == 0){
             this.setEnemyCannonCount(row,this.getEnemyColumn());
-            console.log("true");
             return true;
         }
+    }
+    getDirection(from_row,from_column,to_row,to_column){
+        if (from_row - to_row > 0) 
+            return UP;
+        else if (from_row - to_row < 0)
+            return DOWN;
+        else if (from_column - to_column > 0)
+            return LEFT;
+        else return RIGHT;
     }
 }
 
@@ -141,42 +157,46 @@ function drawData(){
     $("#player_hp").text(c_battle.getPlayerHp());
     $("#enemy_hp").text(c_battle.getEnemyHp());
 
+    $("#player_cannon").css("width",c_battle.getPlayerColumn()*block_square + "px").css("height",c_battle.getTableRow()*block_square+"px");
     $("#player_cannon").html(draw_player_table());
     $("#enemy_cannon").html(draw_enemy_table());
 }
 function draw_player_table(){
     var result = "";
     for (let i=0;i<c_battle.getTableRow();i++){
-        result += '<div class="d-flex flex-row pb-1" id="row'+i+'">';
         for (let j=0;j<c_battle.getPlayerColumn();j++){
             var block_type = parseInt(c_battle.getBlockById(i,j));
+            var img = null;
             switch (block_type){
                 case RED_CANNON:
-                    result+='<img id="block'+i+j+'" class="block" src="'+IMG_RED_BLOCK+'" / >';
+                    img = IMG_RED_BLOCK;
                     break;
                 case GREEN_CANNON:
-                    result+='<img id="block'+i+j+'" class="block" src="'+IMG_GREEN_BLOCK+'" / >';
+                    img = IMG_GREEN_BLOCK;
                     break;
                 case FIRE_BLOCK:
-                    result+='<img id="block'+i+j+'" class="block" src="'+IMG_FIRE_BLOCK+'" / >';
+                    img = IMG_FIRE_BLOCK;
                 case NO_BLOCK:
-                    result+='<img id="block'+i+j+'" class="block" src="'+IMG_NO_BLOCK+'" / >';
+                    img = IMG_NO_BLOCK;
                 default:
-                    result+='<div class="block" id="block'+i+j+'"></div>';
+                    img = "";
+                    break;
             }
+            result += '<img id= "block'+i+j+'" class="player_block" style="top:'+i*block_square+'px;left:'+j*block_square+'px;" src='+img+' alt="img" />' ;
         }
         var cannon_type = parseInt(c_battle.getPlayerCannonByRow(i));
+        var img;
         switch (cannon_type){
             case RED_CANNON:
-                result+='<img class="head_cannon" src="../image/red_head_cannon.png" alt="red_cannon"/ >';
+                img = IMG_RED_HEAD;
                 break;
             case GREEN_CANNON:
-                result+='<img class="head_cannon" src="../image/green_head_cannon.png" alt=green_cannon"/>';
+                img = IMG_GREEN_HEAD;
                 break;
             default:
                 break;
         }
-        result += '</div>';
+        result += '<img class="player_head_cannon" style="top:'+i*block_square+'px;left:'+c_battle.getPlayerColumn()*block_square+'px;" src='+img+ ' />' ;
     }
     return result;
 }
@@ -185,13 +205,13 @@ function draw_enemy_table(){
     var result = "";
     for (let i=0;i<c_battle.getTableRow();i++){
         result += '<div class="d-flex flex-row pb-1" id="enemy_row'+i+'">';
-        result+='<img class="head_cannon " src="../image/enemy_head_cannon.png" alt="enemy_cannon"/>';
+        result+='<img class="enemy_head_cannon" src='+IMG_ENEMY_HEAD+' alt="enemy_cannon"/>';
         for (let j=0;j<c_battle.enemy_column;j++){
             var cannon_count = parseInt(c_battle.enemy_table[i]);
             if (j<cannon_count){
-                result += '<div class="block black_block"></div>';
+                result += '<div class="enemy_block black_block"></div>';
             } else {
-                result += '<div class="block red_block"></div>';
+                result += '<div class="enemy_block red_block"></div>';
             }
         }
         result += '</div>';
@@ -229,13 +249,13 @@ function redrawBlock(row,column){
 
 function redrawEnemyRow(row){
     var result = "";
-    result+='<img class="head_cannon " src="../image/enemy_head_cannon.png" alt="enemy_cannon"/>';
+    result+='<img class="enemy_head_cannon" src='+IMG_ENEMY_HEAD+' alt="enemy_cannon"/>';
     for (let j=0;j<c_battle.enemy_column;j++){
         var cannon_count = parseInt(c_battle.enemy_table[row]);
         if (j<cannon_count){
-            result += '<div class="block black_block"></div>';
+            result += '<div class="enemy_block black_block"></div>';
         } else {
-            result += '<div class="block red_block"></div>';
+            result += '<div class="enemy_block red_block"></div>';
         }
     }
     $("#enemy_row"+row).html(result);
@@ -261,38 +281,75 @@ function enemyTurn(fire){
 function updateHp(){
     $("#player_hp").text(c_battle.getPlayerHp());
     $("#enemy_hp").text(c_battle.getEnemyHp());
-
+}
+function takeDamage(){
+    let damage = 0;
+    for (let i=0;i<c_battle.getTableRow();i++){
+        for (let j=0;j<c_battle.getPlayerColumn();j++){
+            if (c_battle.getBlockById(i,j) == FIRE_BLOCK){
+                damage += 1;
+            }
+        }
+    }
+    c_battle.setPlayerHp(c_battle.getPlayerHp() - damage);
+}
+function swapTwoId(first_row,first_column,second_row,second_column){
+    var temp = $("#block"+first_row+first_column); 
+    $("#block"+second_row+second_column).attr("id","block"+first_row+first_column); 
+    temp.attr("id","block"+second_row+second_column);
 }
 function exchangeTwoBlock(first_row,first_column,second_row,second_column){
+    animateBlock(first_row,first_column,c_battle.getDirection(first_row,first_column,second_row,second_column));
+    animateBlock(second_row,second_column,c_battle.getDirection(second_row,second_column,first_row,first_column));
+
     c_battle.switchTwoBlock(first_row,first_column,second_row,second_column);
+    swapTwoId(first_row,first_column,second_row,second_column);
+
     redrawBlock(first_row,first_column);
     redrawBlock(second_row,second_column);
 }
-$("#player_cannon").on("click",".block",function(){
-    var id = $(this).attr('id').substr(5);  //substr "block"
-    if (c_battle.checkSelectAvalable(id[0],id[1])){
+$("#player_cannon").on("click",".player_block",function(){
+    var row = parseInt($(this).css("top").replace("px","")) / block_square;
+    var column =  parseInt($(this).css("left").replace("px","")) / block_square; //substr "block"
+    if (c_battle.checkSelectAvalable(row,column)){
         if (!selected){
             $(this).addClass("block_selected");
             selected = true;
-            first_column = id[1];
-            first_row = id[0];
+            first_column = column;
+            first_row = row;
         }
         else {
-            var second_column = id[1];
-            var second_row = id[0];
+            var second_column = column;
+            var second_row = row;
+            $("#block"+first_row+first_column).removeClass("block_selected");
             if (c_battle.checkExchangeAvailable(first_row,first_column,second_row,second_column)){
                 exchangeTwoBlock(first_row,first_column,second_row,second_column);
+                takeDamage();
+                updateHp();
                 enemyTurn(false);
             }
-            
-            $("#block"+first_row+first_column).removeClass("block_selected");
             selected = false;
-            first_column = null;
-            first_row = null;
         }
     }
 });
-
+function animateBlock(row,column,direction){
+    switch (direction){
+        case UP:
+            $("#block"+row+column).animate({top:"-=52px"});
+            break;
+        case DOWN:
+            $("#block"+row+column).animate({top:"+=52px"});
+            break;
+        case LEFT:
+            $("#block"+row+column).animate({left:"-=52px"});
+            break;
+        case RIGHT:
+            $("#block"+row+column).animate({left:"+=52px"});
+            break;
+        default:
+            break;
+    }
+}
 $("#fire_button").on("click",function(){
     enemyTurn(true);
     for (let i = 0; i < c_battle.getTableRow(); i++){
@@ -304,6 +361,7 @@ $("#fire_button").on("click",function(){
         }
         if (j >= 0 && c_battle.getBlockById(i,j) == FIRE_BLOCK){
             total_damage *= 2;
+            if (total_damage == 0) j++;
         }
         else {
             j++;
@@ -315,5 +373,6 @@ $("#fire_button").on("click",function(){
         c_battle.setEnemyHp(c_battle.getEnemyHp() - total_damage);
         
     }
+    takeDamage();
     updateHp();
 })

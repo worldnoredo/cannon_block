@@ -1,8 +1,14 @@
-.block{
+.player_block{
     width:50px;
     height:50px;
-    border:gray 1px solid;
+    margin: 1px;
     background-color: aqua;
+    position:absolute;
+}
+.enemy_block{
+    width:50px;
+    height:50px;
+    margin: 1px;
 }
 .red_block{
     background-color: red;
@@ -10,9 +16,21 @@
 .black_block{
     background-color: black;
 }
-.head_cannon{
+.player_head_cannon{
     width:50px;
     height:50px;
+    position:absolute;
+}
+.enemy_head_cannon{
+    width:50px;
+    height:50px;
+    position:relative;
+}
+.player_table{
+    background-color: aqua;
+    width:fit-content;
+    height:fit-content;
+    position:relative;
 }
 .turn_item{
     width: 150px;
@@ -20,6 +38,7 @@
 }
 .block_selected{
     opacity: 0.5;
+    background-color:darkslateblue;
 }
 
 @keyframes cannon_connect {
@@ -27,7 +46,6 @@
     100%    {opacity: 0.5;}
 }
 .cannon_connect{
-    background-color: darksalmon;
     animation-name: cannon_connect;
     animation-duration: 1s;
     animation-direction: alternate;
