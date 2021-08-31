@@ -46,8 +46,9 @@
     100%    {opacity: 0.5;}
 }
 .cannon_connect{
-    animation-name: cannon_connect;
+    background-color: darksalmon;
+    /* animation-name: cannon_connect;
     animation-duration: 1s;
     animation-direction: alternate;
-    animation-iteration-count: infinite;
+    animation-iteration-count: infinite; */
 }

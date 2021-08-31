@@ -264,6 +264,11 @@ function setFireBlock(row,column){
     c_battle.setBlockById(row,column,FIRE_BLOCK);
     redrawBlock(row,column);
 }
+function addnewBlock(row){
+    var type = Math.floor(Math.random()*2)+1;
+    c_battle.setBlockById(row,0,type);
+    redrawBlock(row,0);
+}
 function addEnemyBlockByRow(fire,row){
     var check = c_battle.addEnemyBlockByRow(fire,row);
     redrawEnemyRow(row);
@@ -332,6 +337,24 @@ $("#player_cannon").on("click",".player_block",function(){
         }
     }
 });
+function checkEmptyBlock(){
+    for (let i=0;i<c_battle.getTableRow();i++){
+        checkEmptyBlockByRow(i);
+    }
+}
+function checkEmptyBlockByRow(row){
+    let j=c_battle.getPlayerColumn() - 1;
+        while (j > 0){
+            if (c_battle.getBlockById(row,j) == NO_BLOCK){
+                exchangeTwoBlock(row,j,row,j-1);
+            }
+            j--;
+        }
+    if (c_battle.getBlockById(row,j) == NO_BLOCK){
+        addnewBlock(row);
+    }
+    if (c_battle.getBlockById(row,c_battle.getPlayerColumn() - 1) == NO_BLOCK) checkEmptyBlockByRow(row);
+}
 function animateBlock(row,column,direction){
     switch (direction){
         case UP:
@@ -349,6 +372,7 @@ function animateBlock(row,column,direction){
         default:
             break;
     }
+    if (c_battle.getBlockById(row,column) == NO_BLOCK) $("#block"+row+column).stop(false,true);
 }
 $("#fire_button").on("click",function(){
     enemyTurn(true);
@@ -370,6 +394,8 @@ $("#fire_button").on("click",function(){
             c_battle.setBlockById(i,j,NO_BLOCK);
             redrawBlock(i,j);
         }
+
+        checkEmptyBlock();
         c_battle.setEnemyHp(c_battle.getEnemyHp() - total_damage);
         
     }
